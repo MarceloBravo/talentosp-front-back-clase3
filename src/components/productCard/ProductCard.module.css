@@ -1,0 +1,19 @@
+.productCard{
+    width: fit-content;
+    padding: 20px;
+    border: solid thin #b9b4b4;
+    border-radius: 10px;
+    margin: 10px;    
+}
+
+img{
+    width: 200px;
+}
+
+.productInfo{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 200px;
+}

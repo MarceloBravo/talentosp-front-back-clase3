@@ -2,24 +2,21 @@ import axios from "axios";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const options = {
-  method: 'GET',
-  url: 'https://ebay32.p.rapidapi.com/product/195499451557',
-  params: {
-    country: 'germany',
-    country_code: 'de'
-  },
-  headers: {
-    'x-rapidapi-key': 'b4536fc67emsh031c45c76b26cb3p1bf453jsne532288abdad',
-    'x-rapidapi-host': 'ebay32.p.rapidapi.com'
-  }
-};
-
-const instance = axios.create(options);
+const instance = axios.create({
+  baseURL: API_URL,
+  
+});
 
 instance.interceptors.request.use(
   (config) => {
-    
+    config.headers = {
+      ...config.headers,
+      'x-rapidapi-key': 'b4536fc67emsh031c45c76b26cb3p1bf453jsne532288abdad',
+      'x-rapidapi-host': 'real-time-amazon-data.p.rapidapi.com'
+    };
+    config.params = {
+      ...config.params,
+    };
     return config;
   },
   (error) => {
@@ -32,6 +29,7 @@ instance.interceptors.response.use(
     return response;
   },
   async (error) => {
+    console.log(error)
     return Promise.reject(error);
   }
 );
