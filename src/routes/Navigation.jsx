@@ -1,13 +1,13 @@
-import { BrowserRouter, Route, Routes } from 'react-router'
+import { Route, Routes } from 'react-router'
 import { HomePage } from '../pages/home/HomePage'
+import { DetalleProductoPage } from '../pages/DetalleProducto/DetalleProductoPage'
 
 const Navigation = () => {
   return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" Component={HomePage}/>
-            </Routes>
-        </BrowserRouter>
+        <Routes>
+            <Route path="/" Component={HomePage}/>
+            <Route path="/product/:id" Component={DetalleProductoPage}/>
+        </Routes>
     )
 }
 

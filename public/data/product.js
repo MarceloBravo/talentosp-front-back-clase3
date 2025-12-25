@@ -1,4 +1,4 @@
-const product = {
+{
   "asin": "B0CP6DDN1H",
   "climate_pledge_friendly": false,
   "currency": "USD",
@@ -18,6 +18,4 @@ const product = {
   "product_title": "Motorola Moto G Play | 2024 | Unlocked | Made for US 4/64GB | 50MP Camera | Sapphire Blue",
   "product_url": "https://www.amazon.com/dp/B0CP6DDN1H",
   "sales_volume": "7K+ bought in past month"
-};
-
-export default product;
+}

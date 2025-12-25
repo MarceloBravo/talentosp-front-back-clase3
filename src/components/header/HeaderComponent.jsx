@@ -1,22 +1,21 @@
-import React from 'react';
 import styles from './HeaderComponent.module.css';
 import logo from '../../assets/logo.png';
+import { Link } from 'react-router';
 
 export const HeaderComponent = () => {
   return (
     <header className={styles.header}>
       <div className={styles.headerContent}>
         <div className={styles.logo}>
-          <a href="/">
+          <Link to="/">
+            
             <img src={logo} alt="eCommerce Logo" />
             <span>MyStore</span>
-          </a>
+          </Link>
         </div>
         <nav className={styles.navigation}>
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/products">Products</a></li>
-            <li><a href="/about">About Us</a></li>
+            <li><Link to="/">Home</Link></li>
           </ul>
         </nav>
         <div className={styles.searchBar}>

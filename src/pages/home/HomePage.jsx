@@ -1,41 +1,38 @@
 import { useEffect, useState } from 'react';
-import { useHttp } from '../../hooks/useHttp'
+import { useLocation } from 'react-router';
 import { SpinnerComponent } from '../../components/spinner/SpinnerComponent';
 import { ProductCard } from '../../components/productCard/ProductCard';
+import { useProducts } from '../../contexts/ProductContext';
+
 import styles from './HomePage.module.css'
 
-
 export const HomePage = () => {
-    const { isLoading, error, data, sendRequest } = useHttp();
-    const [ page, setPage ] = useState(1)
+    const { state, getAllProducts} = useProducts();
     const [ products, setProducts ] = useState([])
-    //const uri = `/search?query=Phone&page=${page}&country=US&sort_by=RELEVANCE&product_condition=ALL&is_prime=false&deals_and_discounts=NONE`
-    const uri = 'products_list.js'
+    const location = useLocation();
 
-    useEffect(()=> {
-        const fetchData = async () => {
-            try{
-                await sendRequest(uri, 'GET')
-            }catch(err){
-                alert(err.message)
+    useEffect(() => {
+        const getAll = async () => {
+            try {
+                const data = await getAllProducts();
+                setProducts(data?.data?.products || []);
+            } catch (error) {
+                console.error('Error loading products:', error);
             }
         }
+        
+        getAll();
+        // eslint-disable-next-line
+    }, [location.pathname]);
 
-        fetchData()
-    },[])
-
-    useEffect(()=>{
-        if(data?.data?.products){        
-            setProducts(data.data.products)
-        }
-    },[data])
+    if (state.loading) return <SpinnerComponent />;
+    if (state.error) return <p>Error: {state.error}</p>;
 
     return (
         <>
-            {isLoading && <SpinnerComponent/>}
             <h2>Las mejores ofertas en smartphones</h2>
             <div className={styles.productsGrid}>
-            {products && products.map(product => 
+            {products.length > 0 && products.map(product => 
                 <ProductCard key={product.asin} {...product}/>
             )}
             </div>

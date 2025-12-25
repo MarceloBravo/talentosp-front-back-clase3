@@ -1,0 +1,118 @@
+.productContainer {
+    display: flex;
+    font-family: Arial, sans-serif;
+    max-width: 1000px;
+    margin: 2rem auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.imageContainer {
+    flex: 1;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9;
+}
+
+.productImage {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.detailsContainer {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.productTitle {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem 0;
+}
+
+.productRating {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.productRating span {
+    color: #ff9900;
+    font-weight: bold;
+}
+
+.productPrice {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.currentPrice {
+    color: #b12704;
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+.originalPrice {
+    text-decoration: line-through;
+    color: #555;
+    font-size: 1rem;
+}
+
+.salesVolume {
+    color: #007600;
+    margin-bottom: 1rem;
+}
+
+.badges {
+    margin-bottom: 1.5rem;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-right: 0.5rem;
+    color: white;
+}
+
+.amazonChoice {
+    background-color: #007185;
+}
+
+.bestSeller {
+    background-color: #c00;
+}
+
+.climatePledge {
+    background-color: #0f783c;
+}
+
+.addToCartButton {
+    background-color: #ffd814;
+    border: 1px solid #fcd21c;
+    border-radius: 20px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    align-self: flex-start;
+}
+
+.addToCartButton:hover {
+    background-color: #f7ca00;
+}
+
+.deliveryInfo {
+    font-size: 0.9rem;
+    color: #333;
+}
