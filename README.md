@@ -21,4 +21,5 @@
 - Guardar filtros y preferencias en localStorage
 - Sincronizar estado entre pestañas
 - Recuperar estado al recargar página
-- Ejercicio: Implementa un sistema de "favoritos" que persista entre sesiones y se sincronice entre pestañas abiertas.
+
+- Ejercicio: Implementa un sistema de "favoritos" que persista entre sesiones y se sincronice entre pestañas abiertas.m

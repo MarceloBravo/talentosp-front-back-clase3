@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './ProductCard.module.css'
 
 export const ProductCard = ({...data}) => {
-    const { asin, product_photo, product_title, product_star_rating, product_num_ratings} = data
+    const { asin, product_photo, product_title, product_star_rating, product_num_ratings, product_price} = data
     const titles = product_title.split('|')
     const [isFavorite, setIsFavorite] = useState(false);
 
@@ -12,9 +12,11 @@ export const ProductCard = ({...data}) => {
             const favoritos = localStorage.getItem('favoritos');
             if(favoritos){
                 const favoritosArray = JSON.parse(favoritos);
-                setIsFavorite(favoritosArray.includes(asin));
+                const exists = favoritosArray.findIndex(p => p.asin === asin) !== -1;
+                setIsFavorite(exists);
             }
         }
+        syncFavorites();
         window.addEventListener("storage", syncFavorites);
         return () => window.removeEventListener("storage", syncFavorites);
         // eslint-disable-next-line
@@ -28,7 +30,8 @@ export const ProductCard = ({...data}) => {
 
         const favoritos = localStorage.getItem('favoritos');
         if (!favoritos) {
-            localStorage.setItem('favoritos', JSON.stringify([asin]));
+            const item = {asin, product_title, product_star_rating, product_num_ratings, product_price}
+            localStorage.setItem('favoritos', JSON.stringify([item]));
         } else {
             actualizarFavoritos(favoritos, newStateIsFavorite);
         }
@@ -38,9 +41,10 @@ export const ProductCard = ({...data}) => {
     const actualizarFavoritos = (favoritos, isFavorite) => {
         const favoritosArray = JSON.parse(favoritos);
         if (isFavorite) {   //Agregar
-            favoritosArray.push(asin);
+            const item = {asin, product_title, product_star_rating, product_num_ratings, product_price}
+            favoritosArray.push(item);
         } else {    //Eliminar
-            const index = favoritosArray.indexOf(asin);
+            const index = favoritosArray.findIndex(p => p.asin === asin);
             if (index !== -1) {
                 favoritosArray.splice(index, 1);
             }
@@ -64,6 +68,7 @@ export const ProductCard = ({...data}) => {
                 <div className={styles.productTating}>
                     <div className={styles.productStarRating}>{product_star_rating}</div>
                     <div className={styles.productNumRatings}>{product_num_ratings}</div>
+                    <div className={styles.productNumRatings}>{product_price}</div>
                 </div>
             </div>
         </div>
