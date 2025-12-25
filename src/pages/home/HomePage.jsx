@@ -9,7 +9,8 @@ export const HomePage = () => {
     const { isLoading, error, data, sendRequest } = useHttp();
     const [ page, setPage ] = useState(1)
     const [ products, setProducts ] = useState([])
-    const uri = `/search?query=Phone&page=${page}&country=US&sort_by=RELEVANCE&product_condition=ALL&is_prime=false&deals_and_discounts=NONE`
+    //const uri = `/search?query=Phone&page=${page}&country=US&sort_by=RELEVANCE&product_condition=ALL&is_prime=false&deals_and_discounts=NONE`
+    const uri = 'products_list.js'
 
     useEffect(()=> {
         const fetchData = async () => {
@@ -25,7 +26,6 @@ export const HomePage = () => {
 
     useEffect(()=>{
         if(data?.data?.products){        
-            console.log(JSON.stringify(data.data.products))
             setProducts(data.data.products)
         }
     },[data])
@@ -33,7 +33,7 @@ export const HomePage = () => {
     return (
         <>
             {isLoading && <SpinnerComponent/>}
-            <div>HomePage</div>
+            <h2>Las mejores ofertas en smartphones</h2>
             <div className={styles.productsGrid}>
             {products && products.map(product => 
                 <ProductCard key={product.asin} {...product}/>

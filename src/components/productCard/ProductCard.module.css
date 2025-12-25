@@ -1,19 +1,90 @@
-.productCard{
-    width: fit-content;
-    padding: 20px;
-    border: solid thin #b9b4b4;
-    border-radius: 10px;
-    margin: 10px;    
+.productCard {
+  background-color: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  margin: 1rem;
+  padding: 1.5rem;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+  cursor: pointer;
+  position: relative; /* Add this for positioning context */
 }
 
-img{
-    width: 200px;
+.favoriteButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #ff0000; /* Red color for the heart */
+  padding: 0;
+  z-index: 2;
 }
 
-.productInfo{
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    width: 200px;
+.favoriteButton:focus {
+  outline: none;
+}
+
+.productCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.productCard img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+.productInfo {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.productTitle {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.25rem;
+  /* Truncate long titles */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Style each part of the title differently if needed */
+.productTitle:first-of-type {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.productTating {
+  display: flex;
+  align-items: center;
+  margin-top: auto; /* Pushes the rating to the bottom */
+  padding-top: 0.5rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.productStarRating {
+  color: #f90;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.productStarRating::before {
+  content: '⭐';
+  margin-right: 0.25rem;
+}
+
+.productNumRatings {
+  color: #666;
+  font-size: 0.9rem;
 }
