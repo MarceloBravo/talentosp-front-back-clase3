@@ -1,20 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { useProducts } from '../../contexts/ProductContext';
 
 
 export const useProductCard = ({...data}) => {
     const { asin, product_photo, product_title, product_star_rating, product_num_ratings, product_price} = data
     const titles = product_title.split('|')
     const [isFavorite, setIsFavorite] = useState(false);
+    const { setContadorFavoritos } = useProducts();
     const navigate = useNavigate();
 
 
 
     useEffect(()=> {
         const syncFavorites = () => {
-            const favoritos = localStorage.getItem('favoritos');
-            if(favoritos){
-                const favoritosArray = JSON.parse(favoritos);
+            const strFavoritos = localStorage.getItem('favoritos');
+            if(strFavoritos){
+                const favoritosArray = JSON.parse(strFavoritos);
                 const exists = favoritosArray.findIndex(p => p.asin === asin) !== -1;
                 setIsFavorite(exists);
             }
@@ -52,7 +54,7 @@ export const useProductCard = ({...data}) => {
                 favoritosArray.splice(index, 1);
             }
         }
-
+        setContadorFavoritos(favoritosArray.length);
         localStorage.setItem('favoritos', JSON.stringify(favoritosArray));
     }
     

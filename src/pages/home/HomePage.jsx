@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { SpinnerComponent } from '../../components/spinner/SpinnerComponent';
 import { ProductCard } from '../../components/productCard/ProductCard';
@@ -8,14 +8,12 @@ import styles from './HomePage.module.css'
 
 export const HomePage = () => {
     const { state, getAllProducts} = useProducts();
-    const [ products, setProducts ] = useState([])
     const location = useLocation();
 
     useEffect(() => {
         const getAll = async () => {
             try {
-                const data = await getAllProducts();
-                setProducts(data?.data?.products || []);
+                await getAllProducts();
             } catch (error) {
                 console.error('Error loading products:', error);
             }
@@ -32,7 +30,7 @@ export const HomePage = () => {
         <>
             <h2>Las mejores ofertas en smartphones</h2>
             <div className={styles.productsGrid}>
-            {products.length > 0 && products.map(product => 
+            {state.products.length > 0 && state.products.map(product => 
                 <ProductCard key={product.asin} {...product}/>
             )}
             </div>

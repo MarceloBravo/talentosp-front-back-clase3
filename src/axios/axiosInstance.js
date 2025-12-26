@@ -9,11 +9,13 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
+    /*
     config.headers = {
       ...config.headers,
       'x-rapidapi-key': 'b4536fc67emsh031c45c76b26cb3p1bf453jsne532288abdad',
       'x-rapidapi-host': 'real-time-amazon-data.p.rapidapi.com'
     };
+    */
     config.params = {
       ...config.params,
     };

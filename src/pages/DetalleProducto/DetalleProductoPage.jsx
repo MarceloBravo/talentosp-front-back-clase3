@@ -14,7 +14,7 @@ export const DetalleProductoPage = () => {
     useEffect(()=> {
         const gobtenerProduct = async () => {
             const data = await getProduct(id);
-            setProducto(data);
+            setProducto(data.data);
         }
         gobtenerProduct();
         // eslint-disable-next-line

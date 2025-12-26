@@ -8,9 +8,21 @@ const CACHE_TTL = 5 * 60 * 1000; // 5 minutos en ms
 const initialState = {
   productsCache: {}, // Cache para listados: { [productId]: { data: product, timestamp } }
   productDetailCache: {}, // Cache para detalles: { [productId]: { data: productDetail, timestamp } }
+  products: [], // Lista actual de productos
   loading: false,
   error: null,
+  filter: null,
+  favoritos: () => {
+    const fav = localStorage.getItem('favoritos')
+    if(fav){
+      return JSON.parse(fav).length;
+    }else{
+      return 0
+    }
+  }
 };
+
+
 
 // Contexto
 const ProductContext = createContext();
@@ -25,7 +37,7 @@ function productReducer(state, action) {
     case 'CACHE_PRODUCT_LIST':
       // Cachea productos del listado (array de productos)
       const updatedProductsCache = { ...state.productsCache };
-      action.payload.data.products.forEach(product => {
+      action.payload.data.forEach(product => {
         updatedProductsCache[product.asin] = {
           data: product,
           timestamp: Date.now(),
@@ -37,8 +49,8 @@ function productReducer(state, action) {
       // Cachea detalle de un producto
       const updatedDetailCache = {
         ...state.productDetailCache,
-        [action.payload.asin]: { 
-          data: action.payload,
+        [action.payload.data.asin]: { 
+          data: {data: action.payload.data},
           timestamp: Date.now(),
         },
       };
@@ -65,6 +77,14 @@ function productReducer(state, action) {
       const storedListCache = JSON.parse(localStorage.getItem('productListCache') || '{}');
       const storedDetailCache = JSON.parse(localStorage.getItem('productDetailCache') || '{}');
       return { ...state, productsCache: storedListCache, productDetailCache: storedDetailCache };
+    case 'SET_PRODUCTS':
+      return { ...state, products: action.payload.data, loading: false };
+    case 'CACHE_FILTER':
+      const filter = action.payload.filter;
+      localStorage.setItem(`filter`, filter || '');
+      return { ...state, filter };
+    case 'SET_FAVORITOS':
+      return { ...state, favoritos: action.payload.favoritos };
     default:
       return state;
   }
@@ -92,7 +112,7 @@ export function ProductProvider({ children }) {
     // Si no está en cache o expiró, fetch desde API
     dispatch({ type: 'SET_LOADING' });
     try {
-      const response = await sendRequest(`product.js`, 'GET');
+      const response = await sendRequest(`/api/productos/${productId}`, 'GET');
       const product = response;
       dispatch({ type: 'CACHE_PRODUCT_DETAIL', payload: product });
       return product;
@@ -103,27 +123,42 @@ export function ProductProvider({ children }) {
   };
 
   // Función para obtener todos los productos (listado, con cache)
-  const getAllProducts = async () => {
+  const getAllProducts = async (searchParams) => {
     dispatch({ type: 'CLEAR_EXPIRED_CACHE' }); // Limpia expirados primero
 
     // Verifica si hay productos en cache (al menos algunos)
     const cachedProducts = Object.values(state.productsCache);
     if (cachedProducts.length > 0 && cachedProducts.every(p => Date.now() - p.timestamp < CACHE_TTL)) {
-      return cachedProducts.map(p => p.data); // Retorna lista desde cache
+      const productsList = cachedProducts.map(p => p.data); // Retorna lista desde cache
+      dispatch({ type: 'SET_PRODUCTS', payload: { data: productsList } });
+      return { data: productsList };
     }
+
+    searchParams = searchParams ?? state.filter;
+    const search = searchParams  ? `?search=${searchParams}` :'';
 
     // Si no hay cache válido, fetch desde API
     dispatch({ type: 'SET_LOADING' });
     try {
-      const response = await sendRequest('products_list.js', 'GET');
+      const response = await sendRequest('/api/productos' + search, 'GET');
       const products = response; // Asumiendo que data es array de productos
+      dispatch({ type: 'CACHE_FILTER', payload: { filter: searchParams || '' } });
       dispatch({ type: 'CACHE_PRODUCT_LIST', payload: products });
+      dispatch({ type: 'SET_PRODUCTS', payload: products });
       return products;
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: error.message });
       throw error;
     }
   };
+
+  const setContadorFavoritos = (totFavoritos = 0) => {
+    dispatch({ type: 'SET_FAVORITOS', payload: { favoritos: totFavoritos } });
+  }
+
+  const getFavoritosCount = () => {
+    return state.favoritos;
+  }
 
   // Función para limpiar cache manualmente (opcional)
   const clearCache = () => {
@@ -133,7 +168,7 @@ export function ProductProvider({ children }) {
   };
 
   return (
-    <ProductContext.Provider value={{ state, getProduct, getAllProducts, clearCache }}>
+    <ProductContext.Provider value={{ state, getProduct, getAllProducts, clearCache, setContadorFavoritos, getFavoritosCount}}>
       {children}
     </ProductContext.Provider>
   );
