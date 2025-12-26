@@ -1,0 +1,90 @@
+.searchContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.btnSuccess {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btnSuccess:hover {
+    background-color: #218838;
+}
+
+.searchControls {
+    display: flex;
+    align-items: center;
+}
+
+.inputSearch {
+    padding: 10px 0px;
+    border-radius: 5px 0 0 5px;
+    border: 1px solid #ccc;
+}
+
+.btnBuscar{
+    border: 1px solid #0070f3;
+    background-color: #0070f3;
+    color: #fff;
+    padding: 0.5rem 1rem 0.5rem 1.5rem;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+.btnBuscar:hover{
+    background-color: #053f82;
+}
+
+.tabla {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.tabla table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla th, .tabla td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.tabla th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.tabla .ellipsisn {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; /* número de líneas */
+  line-clamp: 3;
+  overflow: hidden;
+  max-width: 875px; /* opcional */
+}
+
+
+.tabla tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.tabla tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+.tabla tbody button{
+    background: none;
+    border: none;
+    cursor: pointer;
+}
