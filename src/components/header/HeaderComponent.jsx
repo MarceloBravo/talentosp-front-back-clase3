@@ -34,18 +34,17 @@ export const HeaderComponent = () => {
               <li><Link to="/mantenedor">Mantenedor de Productos</Link></li>
             </ul>
           </nav>
-          {location.pathname === '/' && (
-            <div className={styles.searchBar}>
-            <input 
-              type="text" 
-              placeholder="Buscar producto..." 
-              value={searchText} 
-              onChange={handleSearchChange} 
-              onKeyDown={handleKeyDown}
-              aria-label="Search"
-            />
-            <button type="button" onClick={e => handleBtnBuscarClick(e)}>Buscar</button>
-          </div>)}
+            <div className={styles.searchBar} style={{ visibility: (location.pathname === '/') ? "visible" : "hidden" }}>
+              <input 
+                type="text" 
+                placeholder="Buscar producto..." 
+                value={searchText} 
+                onChange={handleSearchChange} 
+                onKeyDown={handleKeyDown}
+                aria-label="Search"
+              />
+              <button type="button" onClick={e => handleBtnBuscarClick(e)}>Buscar</button>
+          </div>
           <div className={styles.userActions}>
             <a href="/cart" aria-label="Shopping Cart">
               <span className={styles.icon}>❤️</span>

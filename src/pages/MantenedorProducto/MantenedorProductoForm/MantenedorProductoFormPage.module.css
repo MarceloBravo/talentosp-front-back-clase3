@@ -92,6 +92,18 @@ button{
     background-color: rgb(1, 1, 117);
 }
 
+.disabled {
+    background-color: grey;
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.disabled:hover {
+    background-color: red; 
+    color: white; 
+}
+
+
 .formControl {
     display: block;
     width: 100%;

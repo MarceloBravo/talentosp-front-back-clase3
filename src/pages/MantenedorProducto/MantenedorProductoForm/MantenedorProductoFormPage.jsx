@@ -1,78 +1,33 @@
-import { useState } from 'react'
+import { useMantenedorProductoFormPage } from './useMantenedorProductoFormPage'
+
 import styles from './MantenedorProductoFormPage.module.css'
-import { useNavigate } from 'react-router'
 
-export const MantenedorProductoFormPage = () => {
-    const [ formData, setFormData ] = useState({
-        asin: '',
-        climate_pledge_friendly: false,
-        is_amazon_choice: false,
-        is_best_seller: false,
-        product_num_ratings: 0,
-        product_original_price: 0,
-        product_photo: '',
-        product_price: 0,
-        product_star_rating: 0,
-        product_title: '',
-        sales_volume: ''
-    })
-    const [ errorFormData, setErrorFormData ] = useState({
-        asin: '',
-        product_num_ratings: '',
-        product_original_price: '',
-        product_photo: '',
-        product_price: '',
-        product_star_rating: '',
-        product_title: '',
-        sales_volume: ''
-    })
-    const navigate = useNavigate()
-
-
-    const handleInputChange = (e) => {
-        setErrorFormData({
-            ...errorFormData,
-            [e.target.name]: e.target.value.length === 0 ? 'El campo no puede estar vacío' : ''
-        })
-
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const handleCheckboxChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.checked
-        })
-    }
-
-    const handleInputNumberChange = (e) => {
-        setErrorFormData({
-            ...errorFormData,
-            [e.target.name]: e.target.value.length === 0 ? 'El campo no puede estar vacío' : ''
-        })
-
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const handleCancelarClick = () => {
-        navigate('/')
-    }
-
-
-
+export const MantenedorProductoFormPage = () => {    
+    const {
+        id,
+        formData,
+        errorFormData,
+        handleInputChange,
+        handleCheckboxChange,
+        handleInputNumberChange,
+        handleCancelarClick,
+        handleGrabarClick,
+        handleCargarImagenClick,
+        handleFileChange,
+        handlerEliminarClick,
+        imgDefault,
+        inputRef
+    } = useMantenedorProductoFormPage();
 
   return (
     <div>
         <h1>Mantenedor de Productos</h1>
+        <div>{id}</div>
         <div className={styles.formContainer}>
             <div className={styles['form-group-left']}>
-                <img src={formData.product_photo} alt={formData.product_title}/>
+                <img src={formData.product_photo ?? imgDefault} alt={formData.product_title}/>
+            <button className={styles.btnSuccess} onClick={handleCargarImagenClick}>Cargar imágen</button>
+            <input type="file" ref={inputRef} accept="image/png" style={{display: 'none'}} onChange={handleFileChange} />
             </div>
             <div className={styles['form-group-right']}>
                 <form>
@@ -87,6 +42,7 @@ export const MantenedorProductoFormPage = () => {
                                 name="asin" 
                                 placeholder='Código del producto'
                                 required
+                                disabled={id}
                                 value={formData.asin}
                                 onChange={e => handleInputChange(e)}
                             />
@@ -178,6 +134,29 @@ export const MantenedorProductoFormPage = () => {
                             {errorFormData.product_price && <span className={styles.textDanger}>{errorFormData.product_price}</span>}
                         </div>
                     </div>
+
+                    <div className={styles.formGroup}>
+                        <label htmlFor='currency'>Tipo Moneda</label>
+                        <div className={styles.inputGroup}>
+                            <select 
+                                className={styles.formControl} 
+                                id='currency' 
+                                name="currency" 
+                                value={formData.currency}
+                                onChange={e => handleInputNumberChange(e)}
+                            >
+                                <option value='' disabled>Seleccione</option>
+                                <option value='CLP'>Peso Chileno</option>
+                                <option value='USD'>Dólar Estadounidense</option>
+                                <option value='EUR'>Euro</option>
+                                <option value='GBP'>Libra Esterlina</option>
+                                <option value='JPY'>Yen Japonés</option>
+                                <option value='AUD'>Dólar Australiano</option>
+                            </select>
+                            {errorFormData.product_star_rating && <span className={styles.textDanger}>{errorFormData.product_star_rating}</span>}
+                        </div>
+                    </div>
+
                     <div className={styles.formGroup}>
                         <label htmlFor='product_star_rating'>Estrellas</label>
                         <div className={styles.inputGroup}>
@@ -195,6 +174,7 @@ export const MantenedorProductoFormPage = () => {
                             {errorFormData.product_star_rating && <span className={styles.textDanger}>{errorFormData.product_star_rating}</span>}
                         </div>
                     </div>
+
                     <div className={styles.formGroup}>
                         <label htmlFor='product_title'>Descripción del producto</label>
                         <div className={styles.inputGroup}>
@@ -227,8 +207,8 @@ export const MantenedorProductoFormPage = () => {
                     </div>
                     
                     <div className={styles.buttonGroup}>
-                        <button type='submit' className={'btn ' + styles.btnSuccess}>Guardar</button>
-                        <button type='button' className={'btn ' + styles.btnDanger}>Eliminar</button>
+                        <button type='button' className={'btn ' + styles.btnSuccess} onClick={handleGrabarClick}>Guardar</button>
+                        <button type='button' className={`btn ${styles.btnDanger} ${!id ? styles.disabled : ''}`} disabled={!id} onClick={handlerEliminarClick}>Eliminar</button>
                         <button type='button' className={'btn ' + styles.btnPrimary} onClick={handleCancelarClick}>Salir</button>
                     </div>
                 </form>
